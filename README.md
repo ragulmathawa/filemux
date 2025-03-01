@@ -27,10 +27,29 @@ Download the latest pre-built binary for your platform from the [Releases](https
    ```bash
    chmod +x filemux-<platform>
    ```
-3. Move to a directory in your PATH (optional):
+3. Move to a directory in your PATH (optional, user-specific):
    ```bash
-   sudo mv filemux-<platform> /usr/local/bin/filemux
+   mkdir -p ~/.local/bin && mv filemux-<platform> ~/.local/bin/filemux
    ```
+
+Alternatively, use these single-line commands to install directly into `~/.local/bin` (no `sudo` required):
+
+#### For macOS (Intel-based):
+```bash
+curl -sL https://api.github.com/repos/ragulmathawa/filemux/releases/latest | grep "browser_download_url.*filemux-darwin-amd64" | cut -d'"' -f4 | xargs curl -L -o ~/.local/bin/filemux && chmod +x ~/.local/bin/filemux
+```
+
+#### For WSL/Linux (x86_64):
+```bash
+curl -sL https://api.github.com/repos/ragulmathawa/filemux/releases/latest | grep "browser_download_url.*filemux-linux-amd64" | cut -d'"' -f4 | xargs curl -L -o ~/.local/bin/filemux && chmod +x ~/.local/bin/filemux
+```
+
+**Note**: Ensure `~/.local/bin` is in your PATH. You can check with `echo $PATH | grep ~/.local/bin`. If it’s not, add it to your shell configuration (e.g., `~/.bashrc` or `~/.zshrc`):
+```bash
+export PATH="$HOME/.local/bin:$PATH"
+```
+Then, reload your shell: `source ~/.bashrc` or `source ~/.zshrc`.
+
 
 ### Build from Source
 1. Clone the repository:

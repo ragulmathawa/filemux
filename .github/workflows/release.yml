@@ -38,13 +38,23 @@ jobs:
       - name: Build Windows binary
         run: GOOS=windows GOARCH=amd64 go build -o filemux-windows-amd64.exe filemux.go
 
-      # Create Release and Upload Assets
+      # Build for macOS (arm64)
+      - name: Build macOS arm64 binary
+        run: GOOS=darwin GOARCH=arm64 go build -o filemux-darwin-arm64 filemux.go
+
+      # Build for Linux (arm64)
+      - name: Build Linux arm64 binary
+        run: GOOS=linux GOARCH=arm64 go build -o filemux-linux-arm64 filemux.go
+
+      # Update the Create Release and Upload Assets step to include arm64 binaries
       - name: Create Release and Upload Assets
         uses: softprops/action-gh-release@v2
         with:
           files: |
             filemux-linux-amd64
+            filemux-linux-arm64
             filemux-darwin-amd64
+            filemux-darwin-arm64
             filemux-windows-amd64.exe
           prerelease: false
           draft: false
