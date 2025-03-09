@@ -21,6 +21,8 @@ func main() {
 	clipboardFlag := flag.Bool("clipboard", false, "Copy output to clipboard instead of printing")
 	clipShortFlag := flag.Bool("c", false, "Same as -clipboard")
 	forceFlag := flag.Bool("f", false, "Force processing of large files")
+	listOnlyFlag := flag.Bool("list", false, "Only list files that would be processed without showing content")
+	listShortFlag := flag.Bool("l", false, "Same as -list")
 	flag.Usage = func() {
 		fmt.Fprintf(os.Stderr, "Usage: filemux [flags] <file-patterns-or-dirs...>\n")
 		fmt.Fprintf(os.Stderr, "Flags:\n")
@@ -29,6 +31,7 @@ func main() {
 		fmt.Fprintf(os.Stderr, "  filemux *.txt\n")
 		fmt.Fprintf(os.Stderr, "  filemux -c ./docs\n")
 		fmt.Fprintf(os.Stderr, "  filemux -f largefile.txt dir/\n")
+		fmt.Fprintf(os.Stderr, "  filemux -l *.go\n")
 	}
 	flag.Parse()
 
@@ -86,6 +89,17 @@ func main() {
 	if len(files) == 0 {
 		fmt.Println("No files found matching the provided patterns or directories")
 		os.Exit(1)
+	}
+
+	// Print the list of files being processed
+	fmt.Printf("Processing %d files:\n", len(files))
+	for i, file := range files {
+		fmt.Printf("[%d] %s\n", i+1, file)
+	}
+
+	// If list-only mode is requested, exit here
+	if *listOnlyFlag || *listShortFlag {
+		os.Exit(0)
 	}
 
 	// Process each file and compile output
